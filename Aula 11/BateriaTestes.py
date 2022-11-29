@@ -1,8 +1,5 @@
 from OtimizadorBase import Otimizador
 
-
-
-
 class BateriaTestes:
     funcoes = []
 
