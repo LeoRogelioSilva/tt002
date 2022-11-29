@@ -1,5 +1,6 @@
 import random
 from Rota import Rota
+from Coordenada import Coordenada
 import time
 from matplotlib import pyplot
 
@@ -32,6 +33,8 @@ class Otimizador:
     # e deve ser mais grossa que a linha dos outros algoritmos.
     # Todas as linhas devem iniciar no tempo zero e terminar no tempo final.
     def singleSwap(self, rota: Rota, time_ms: int):
+        timeArr = []
+        comprimentoArr = []
         # Inicia a partir de uma rota não otimizada
         rota.shuffle()
         # Tempo de entrada na função.
@@ -51,8 +54,14 @@ class Otimizador:
             else:
                 # desfaz o swap
                 swap(rota, pos1, pos2)
+            timeArr.append(delta_ms)
+            comprimentoArr.append(minComprimento)
+        return minComprimento
+
 
     def aleatorio(self, rota: Rota, time_ms: int):
+        timeArr = []
+        comprimentoArr = []
         # inicia a partir de uma rota não otimizada
         rota.shuffle()
         tin = round(time.time() * 1000)
@@ -65,6 +74,9 @@ class Otimizador:
             if rotaAux.comprimento() < minComprimento:
                 rota.coords = rotaAux.coords
                 minComprimento = rota.comprimento()
+            timeArr.append(delta_ms)
+            comprimentoArr.append(minComprimento)
+        return minComprimento
 
     # Aqui você deve usar sua criatividade e propor um algoritmo de
     # otimização. O algoritmo deixado é apenas um exemplo.
@@ -74,19 +86,28 @@ class Otimizador:
     # deve estar um nome curto que identifique o seu grupo. O nome deve
     # ser composto de um nome dos integrantes. Exemplo:
     # Rodrigo_Ivan_Celso
-    def otimizadorGrupo1(self, rota: Rota, time_ms: int):
+
+    def otimizadorGrupo_Felipe_Leo(self, rota: Rota, time_ms: int):
+        timeArr = []
+        comprimentoArr = []
         # inicia a partir de uma rota não otimizada
         rota.shuffle()
         tin = round(time.time() * 1000)
         delta_ms = round(time.time() * 1000) - tin
-        minComprimento = rota.comprimento()
+        comprimento = rota.comprimento()
+        minComprimento = comprimento
+        timeArr.append(delta_ms)
+        comprimentoArr.append(comprimento)
         while delta_ms < time_ms:
             delta_ms = round(time.time() * 1000) - tin
-            rotaAux = rota.copy()
-            rotaAux.shuffle()
-            if rotaAux.comprimento() < minComprimento:
-                rota.coords = rotaAux.coords
+            rota.otimiza()
+            if(rota.comprimento() < minComprimento):
                 minComprimento = rota.comprimento()
+            comprimento = rota.comprimento()
+            timeArr.append(delta_ms)
+            comprimentoArr.append(comprimento)
+        
+        return minComprimento
 
     # Esta função deve salvar o gráfico. A função não deve ser alterada.
     # O objetivo final é colocar vários algoritmos vindos de grupos diferentes
@@ -94,6 +115,8 @@ class Otimizador:
     def salvaFigura(self, filename):
         self.plt.tight_layout()
         self.plt.legend()
+        #self.plt.grid(True)
+        #self.plt.show()
         self.plt.savefig(filename)
 
 
@@ -118,5 +141,5 @@ opt.singleSwap(r, time_ms)
 # Otimização aleatório
 opt.aleatorio(r, time_ms)
 # Otimização feita por seu grupo
-opt.otimizadorGrupo1(r, time_ms)
+opt.otimizadorGrupo_Felipe_Leo(r, time_ms)
 opt.salvaFigura("Resultado_" + str(size) + ".png")

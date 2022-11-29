@@ -1,4 +1,7 @@
 from OtimizadorBase import Otimizador
+from Rota import Rota
+import numpy as np
+from matplotlib import pyplot
 
 class BateriaTestes:
     funcoes = []
@@ -15,7 +18,9 @@ class BateriaTestes:
     tarefa (aula 11).
     
     Primeiramente deve ser cadastrado um conjunto de funções de otimização na classe
-    BateriaTestes, através do método addFunção. Esta função, chamada 'executa', recebe
+    BateriaTestes, através do método addFunção. 
+
+    Esta função, chamada 'executa', recebe
     o número de repetições que pode ser 3, 5 ou 10 por exemplo. O tempo, em ms, e uma 
     lista de tamanhos. Por exemplo, se a lista de tamanhos for [10,100,100], deve-se executar
     as funções para rotas de tamanho 10, 1000 e 1000. Deve ser criada uma única instância (rota) 
@@ -41,16 +46,67 @@ class BateriaTestes:
     # ser composto de um nome dos integrantes. Exemplo:
     # Rodrigo_Ivan_Celso. Além disso, o arquivo Phyton deve seguir o mesmo padrão.
     # BateriaTestes_Rodrigo_Ivan_Celso.py.
+
+
+    pd{
+        Size1: {
+            otimizador.nome: [
+                media_rep1,
+                media_rep2
+                ...
+                media_rep_n
+            ],
+            otimizador.nome: [
+                media_rep1,
+                media_rep2
+                ...
+                media_rep_n
+            ]
+
+        },
+        Size2: {
+            otimizador.nome: [
+                media_rep1,
+                media_rep2
+                ...
+                media_rep_n
+            ],
+            otimizador.nome: [
+                media_rep1,
+                media_rep2
+                ...
+                media_rep_n
+            ]
+        }
+    }
+
+
     '''
 
-    def executa(self, n_repeticoes: int, tempo_ms, sizeList):
-        for size in sizeList:
-            print(f"Criando Rota_"+str(size))
-        for size in sizeList:
-            for otimizador in self.funcoes:
-                for rep in range(n_repeticoes):
-                    print(f"Repetição {rep} da função {otimizador[1]} com "+str(size)+" vertices")
 
+
+    def executa(self, n_repeticoes: int, tempo_ms, sizeList):
+        plt = pyplot
+        fig, ax = plt.subplots()
+        ind = np.arange(size)
+
+        for size in sizeList:
+            otimizadorArr = np.array([])
+            print(f"Criando Rota_"+str(size))
+            for otimizador in self.funcoes:
+                media = []
+                for rep in range(n_repeticoes):
+                    r = Rota()
+                    r.randomCoords(size, 400)
+                    respJson = otimizador.funcao(r, tempo_ms)
+                    media.append(np.mean(respJson["y"]))
+                    print(f"Repetição {rep} da função {otimizador[1]} com "+str(size)+" vertices")
+                dps = map(np.std(),media)
+
+            plt.tight_layout()
+            plt.legend()
+            filename = "Otimizacao_" + size + ".png"
+            plt.savefig(filename)
 
 '''
 Esta parte do código cria uma bateria de teste, cadastra as funções
@@ -58,11 +114,12 @@ e executa a bateria de testes. Esta parte não deve ser alterada.
 Note que ao adicionar uma função também é passado um nome (rótulo) 
 para a funcão. Todo o resto deve acontecer dentro da função executa.
 '''
+
 bt = BateriaTestes()
 otimizador = Otimizador()
 bt.addFuncao(otimizador.singleSwap, "singleSwap")
 bt.addFuncao(otimizador.aleatorio, "aleatorio")
-bt.addFuncao(otimizador.otimizadorGrupo1, "grupo1")
+bt.addFuncao(otimizador.otimizadorGrupo_Felipe_Leo, "Grupo_Felipe_Leo")
 
 # tempo_ms = 300
 # repeticoes = 5
