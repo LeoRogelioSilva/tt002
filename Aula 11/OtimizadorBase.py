@@ -56,7 +56,15 @@ class Otimizador:
                 swap(rota, pos1, pos2)
             timeArr.append(delta_ms)
             comprimentoArr.append(minComprimento)
-        return minComprimento
+        resp = {
+            "x": timeArr,
+            "y": comprimentoArr,
+            "min": minComprimento,
+            "color": "#f00",
+            "label" : "Swap",
+            "linewidth" : 3
+        }
+        return resp
 
 
     def aleatorio(self, rota: Rota, time_ms: int):
@@ -76,7 +84,15 @@ class Otimizador:
                 minComprimento = rota.comprimento()
             timeArr.append(delta_ms)
             comprimentoArr.append(minComprimento)
-        return minComprimento
+        resp = {
+            "x": timeArr,
+            "y": comprimentoArr,
+            "min": minComprimento,
+            "color": "#0f0",
+            "label" : "Aleatorio",
+            "linewidth" : 3
+        }
+        return resp
 
     # Aqui você deve usar sua criatividade e propor um algoritmo de
     # otimização. O algoritmo deixado é apenas um exemplo.
@@ -106,8 +122,27 @@ class Otimizador:
             comprimento = rota.comprimento()
             timeArr.append(delta_ms)
             comprimentoArr.append(comprimento)
+        self.plt.bar(
+            timeArr, 
+            comprimentoArr,
+            width=1000, 
+            color="#00f", 
+            label="Felipe_Leo", 
+            linewidth=5
+            )
         
-        return minComprimento
+        self.plt.tight_layout()
+        self.plt.legend()
+        self.plt.savefig("Otimizacao_Felipe_Leo.png")
+        resp = {
+            "x": timeArr,
+            "y": comprimentoArr,
+            "min": minComprimento,
+            "color": "#00f",
+            "label" : "Felipe_Leo",
+            "linewidth" : 5
+        }
+        return resp
 
     # Esta função deve salvar o gráfico. A função não deve ser alterada.
     # O objetivo final é colocar vários algoritmos vindos de grupos diferentes

@@ -1,3 +1,8 @@
+#Integrantes:
+#Felipe Araújo Santos Pinto - 169401
+#Leonardo Rogelio da Silva - 177346
+#
+
 from OtimizadorBase import Otimizador
 from Rota import Rota
 import numpy as np
@@ -86,27 +91,27 @@ class BateriaTestes:
 
 
     def executa(self, n_repeticoes: int, tempo_ms, sizeList):
-        plt = pyplot
-        fig, ax = plt.subplots()
-        ind = np.arange(size)
+        plt1 = pyplot
 
         for size in sizeList:
-            otimizadorArr = np.array([])
             print(f"Criando Rota_"+str(size))
             for otimizador in self.funcoes:
                 media = []
                 for rep in range(n_repeticoes):
                     r = Rota()
                     r.randomCoords(size, 400)
-                    respJson = otimizador.funcao(r, tempo_ms)
-                    media.append(np.mean(respJson["y"]))
+                    respJson = otimizador(r, tempo_ms)
+                    plt = pyplot
+                    print(respJson)
+                    plt.bar(respJson["x"], respJson["y"], width=400, color=respJson["color"], label= respJson["label"], linewidth=respJson["linewidth"])
+                    plt.tight_layout()
+                    plt.legend()
                     print(f"Repetição {rep} da função {otimizador[1]} com "+str(size)+" vertices")
-                dps = map(np.std(),media)
-
-            plt.tight_layout()
-            plt.legend()
-            filename = "Otimizacao_" + size + ".png"
-            plt.savefig(filename)
+                    
+                    plt.tight_layout()
+                    plt.legend()
+                    filename = "Otimizacao_" + respJson["label"] +"_"+size + ".png"
+                    plt.savefig(filename)
 
 '''
 Esta parte do código cria uma bateria de teste, cadastra as funções
